@@ -33,6 +33,43 @@ public class Main {
             while (keepPlaying) {
                 System.out.println("Well then, here we go!");
                 System.out.println("For starters, which job would you like? \n a) lawn mower ($11,247/yr) \n -b) dog walker ($10,564/yr) \n -c) pizza maker ($15,476/yr)");
+                if(scn.next().toLowerCase().equals("a")){
+                    income = 11247;
+                }
+                else if(scn.next().toLowerCase().equals("b")){
+                    income = 10564;
+                }
+                else if(scn.next().toLowerCase().equals("c")){
+                    income = 15476;
+                }
+                System.out.println("Great! Now that you have a job, do you want to:\n a) check your stats \n b) check the market \n c) check the bank \n d) progress one term");
+                while(keepPlaying) {
+                    if (scn.next().toLowerCase().equals("a")) {
+
+                    } else if (scn.next().toLowerCase().equals("b")) {
+
+                    } else if (scn.next().toLowerCase().equals("c")) {
+                        System.out.println("Welcome to the bank! would you like to: \n a) Take out a loan \n b) Check loan status");
+                        if (scn.next().toLowerCase().equals("a")) {
+                            System.out.println("How much would you like to take out? (no $)");
+                            int loanVal = scn.nextInt();
+                            System.out.println("Great! And how long would you like your term to be? \n a) 60 months \n b) 72 months \n c) 84 months");
+                            int loanTerm = 0;
+                            if(scn.next().toLowerCase().equals("a")){
+                                loanTerm = 60;
+                            }
+                            else if(scn.next().toLowerCase().equals("b")){
+                                loanTerm = 72;
+                            }
+                            else if(scn.next().toLowerCase().equals("c")){
+                                loanTerm = 84;
+                            }
+                            System.out.println("Fantastic! \n Your total loan value is - $" + loanVal + "\nAnd the term is - " + loanTerm + " months" + "\nAnd your monthly payment will be - " + (loanVal/loanTerm + (loanVal * 0.073)));
+                        }
+                    } else if (scn.next().toLowerCase().equals("d")) {
+                        nextTerm();
+                    }
+                }
             }
         }
     }
@@ -41,7 +78,6 @@ public class Main {
             property.get(i).setValue((property.get(i).getTermPercentIncrease() + 1) * property.get(i).getValue());
             debt = loan.getRemainingBal();
             playerBankAccount += income/2;
-
         }
     }
 }

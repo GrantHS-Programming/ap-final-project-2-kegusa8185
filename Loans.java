@@ -1,7 +1,4 @@
 public class Loans {
-    public static void main(String[] args) {
-        new Loans();
-    }
     private double loanAmount;
     private double APR = 0.073;
     private double remainingBal;
@@ -22,5 +19,8 @@ public class Loans {
     }
     public int getTerm(){
         return term;
+    }
+    public double getLoanPayment(double loanBal, int term, double APR){
+        return (loanBal/term) + loanBal*APR;
     }
 }

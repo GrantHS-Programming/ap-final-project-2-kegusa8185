@@ -6,19 +6,20 @@ public class Main {
     double years = 0;
     double playerNetWorth = 0;
     double playerBankAccount = 0;
-    String occupation;
     double income = 0;
     Loans loan = new Loans(0.0, 0);
     double debt = 0;
     ArrayList<Houses> property = new ArrayList<Houses>();
+    Houses test = new Houses(3, 2.5, 3500, 250000, 2);
+
     public static void main(String[] args){
         new Main();
     }
     public Main(){
-        //Game();
+        Game();
     }
 
-    public void game(){
+    public void Game(){
         boolean keepPlaying = true;
         System.out.println("Welcome to Real Estate Investor! We are glad to have you!");
         System.out.println(" ");
@@ -30,45 +31,53 @@ public class Main {
         System.out.println("Alright, well are you ready to get started?");
         String ready = scn.next().toLowerCase();
         if (ready.equals("yes")) {
-            while (keepPlaying) {
-                System.out.println("Well then, here we go!");
-                System.out.println("For starters, which job would you like? \n a) lawn mower ($11,247/yr) \n -b) dog walker ($10,564/yr) \n -c) pizza maker ($15,476/yr)");
-                if(scn.next().toLowerCase().equals("a")){
-                    income = 11247;
-                }
-                else if(scn.next().toLowerCase().equals("b")){
-                    income = 10564;
-                }
-                else if(scn.next().toLowerCase().equals("c")){
-                    income = 15476;
-                }
-                System.out.println("Great! Now that you have a job, do you want to:\n a) check your stats \n b) check the market \n c) check the bank \n d) progress one term");
-                while(keepPlaying) {
-                    if (scn.next().toLowerCase().equals("a")) {
+            System.out.println("Well then, here we go!");
+            System.out.println("For starters, which job would you like? \n a) lawn mower ($11,247/yr) \n b) dog walker ($10,564/yr) \n c) pizza maker ($15,476/yr)");
+            String jobChoice = scn.next();
+            if(jobChoice.equalsIgnoreCase("a")){
+                income = 11247;
+            }
+            if(jobChoice.equalsIgnoreCase("b")){
+                income = 10564;
+            }
+            if(jobChoice.equalsIgnoreCase("c")){
+                income = 15476;
+            }
+            System.out.println("Great! That means your income is " + income);
+            System.out.println("Now that you have a job,");
+            System.out.println("do you want to:\n a) check your stats \n b) check the market \n c) check the bank \n d) progress one term");
+            while(keepPlaying) {
+                String choice = scn.next();
+                if (choice.equalsIgnoreCase("a")) {
 
-                    } else if (scn.next().toLowerCase().equals("b")) {
+                } else if (choice.equalsIgnoreCase("b")) {
 
-                    } else if (scn.next().toLowerCase().equals("c")) {
-                        System.out.println("Welcome to the bank! would you like to: \n a) Take out a loan \n b) Check loan status");
-                        if (scn.next().toLowerCase().equals("a")) {
-                            System.out.println("How much would you like to take out? (no $)");
-                            int loanVal = scn.nextInt();
-                            System.out.println("Great! And how long would you like your term to be? \n a) 60 months \n b) 72 months \n c) 84 months");
-                            int loanTerm = 0;
-                            if(scn.next().toLowerCase().equals("a")){
-                                loanTerm = 60;
-                            }
-                            else if(scn.next().toLowerCase().equals("b")){
-                                loanTerm = 72;
-                            }
-                            else if(scn.next().toLowerCase().equals("c")){
-                                loanTerm = 84;
-                            }
-                            System.out.println("Fantastic! \n Your total loan value is - $" + loanVal + "\nAnd the term is - " + loanTerm + " months" + "\nAnd your monthly payment will be - " + (loanVal/loanTerm + (loanVal * 0.073)));
+                } else if (choice.equalsIgnoreCase("c")) {
+                    System.out.println("Welcome to the bank! would you like to: \n a) Take out a loan \n b) Check loan status");
+                    choice = scn.next();
+                    if (choice.equalsIgnoreCase("a")) {
+                        System.out.println("How much would you like to take out? (no $)");
+                        int loanVal = scn.nextInt();
+                        System.out.println("Great! And how long would you like your term to be? \n a) 60 months \n b) 72 months \n c) 84 months");
+                        int loanTerm = 0;
+                        choice = scn.next();
+                        if(choice.equalsIgnoreCase("a")){
+                            loanTerm = 60;
                         }
-                    } else if (scn.next().toLowerCase().equals("d")) {
-                        nextTerm();
+                        else if(choice.equalsIgnoreCase("b")){
+                            loanTerm = 72;
+                        }
+                        else if(choice.equalsIgnoreCase("c")){
+                            loanTerm = 84;
+                        }
+                        System.out.println("Fantastic! \n Your total loan value is - $" + loanVal + "\nAnd the term is - " + loanTerm + " months" + "\nAnd your monthly payment will be - " + (loanVal/loanTerm + (loanVal * 0.073)));
                     }
+                }
+                if (choice.equalsIgnoreCase("d")) {
+                    property.add(test);
+                    nextTerm();
+                    setNetWorth();
+                    playerStats();
                 }
             }
         }
@@ -78,7 +87,25 @@ public class Main {
             property.get(i).setValue((property.get(i).getTermPercentIncrease() + 1) * property.get(i).getValue());
             debt = loan.getRemainingBal();
             playerBankAccount += income/2;
+            years += 0.5;
         }
+    }
+    public void setNetWorth(){
+        int netWorth = 0;
+        for(int i = 0; i < property.size(); i++){
+            netWorth += property.get(i).getValue();
+        }
+        netWorth += playerBankAccount;
+        netWorth -= debt;
+        playerNetWorth = netWorth;
+    }
+    public void playerStats(){
+        System.out.println("Year - " + years);
+        System.out.println("Player bank account - " + playerBankAccount);
+        System.out.println("Player net worth - " + playerNetWorth);
+        System.out.println("Income - " + income);
+        System.out.println("Debt - " + debt);
+        System.out.println("Number of properties - " + property.size());
     }
 }
 

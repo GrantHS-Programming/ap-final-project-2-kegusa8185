@@ -20,6 +20,7 @@ public class Main {
     }
 
     public void Game(){
+        property.add(test);
         boolean keepPlaying = true;
         System.out.println("Welcome to Real Estate Investor! We are glad to have you!");
         System.out.println(" ");
@@ -34,60 +35,71 @@ public class Main {
             System.out.println("Well then, here we go!");
             System.out.println("For starters, which job would you like? \n a) lawn mower ($11,247/yr) \n b) dog walker ($10,564/yr) \n c) pizza maker ($15,476/yr)");
             String jobChoice = scn.next();
-            if(jobChoice.equalsIgnoreCase("a")){
+            if(jobChoice.equalsIgnoreCase("a") || jobChoice.equalsIgnoreCase("lawn mower")){
                 income = 11247;
             }
-            if(jobChoice.equalsIgnoreCase("b")){
+            if(jobChoice.equalsIgnoreCase("b") || jobChoice.equalsIgnoreCase("dog walker")){
                 income = 10564;
             }
-            if(jobChoice.equalsIgnoreCase("c")){
+            if(jobChoice.equalsIgnoreCase("c") || jobChoice.equalsIgnoreCase("pizza maker")){
                 income = 15476;
             }
             System.out.println("Great! That means your income is " + income);
             System.out.println("Now that you have a job,");
-            System.out.println("do you want to:\n a) check your stats \n b) check the market \n c) check the bank \n d) progress one term");
             while(keepPlaying) {
+                System.out.println("do you want to:\n a) check your stats \n b) check the market \n c) check the bank \n d) progress one term");
+                setNetWorth();
                 String choice = scn.next();
                 if (choice.equalsIgnoreCase("a")) {
-
+                    playerStats();
                 } else if (choice.equalsIgnoreCase("b")) {
-
+                    //houseMarket();
                 } else if (choice.equalsIgnoreCase("c")) {
-                    System.out.println("Welcome to the bank! would you like to: \n a) Take out a loan \n b) Check loan status");
-                    choice = scn.next();
-                    if (choice.equalsIgnoreCase("a")) {
-                        System.out.println("How much would you like to take out? (no $)");
-                        int loanVal = scn.nextInt();
-                        System.out.println("Great! And how long would you like your term to be? \n a) 60 months \n b) 72 months \n c) 84 months");
-                        int loanTerm = 0;
-                        choice = scn.next();
-                        if(choice.equalsIgnoreCase("a")){
-                            loanTerm = 60;
-                        }
-                        else if(choice.equalsIgnoreCase("b")){
-                            loanTerm = 72;
-                        }
-                        else if(choice.equalsIgnoreCase("c")){
-                            loanTerm = 84;
-                        }
-                        System.out.println("Fantastic! \n Your total loan value is - $" + loanVal + "\nAnd the term is - " + loanTerm + " months" + "\nAnd your monthly payment will be - " + (loanVal/loanTerm + (loanVal * 0.073)));
-                    }
-                }
-                if (choice.equalsIgnoreCase("d")) {
-                    property.add(test);
+                    bank();
+                } else if (choice.equalsIgnoreCase("d")) {
                     nextTerm();
                     setNetWorth();
                     playerStats();
                 }
-            }
+                }
+
         }
     }
     public void nextTerm(){
         for (int i = 0; i < property.size(); i++) {
-            property.get(i).setValue((property.get(i).getTermPercentIncrease() + 1) * property.get(i).getValue());
+            property.get(i).setValue((property.get(i).getTermPercentIncrease() + 0.2) * property.get(i).getValue());
+            System.out.println(property.get(i).getTermPercentIncrease());
+            System.out.println(property.get(i).getValue());
             debt = loan.getRemainingBal();
             playerBankAccount += income/2;
             years += 0.5;
+        }
+    }
+    public void bank() {
+        System.out.println("Welcome to the bank! would you like to: \n a) Take out a loan \n b) Check loan status \n c) Leave");
+        String choice = scn.next();
+        if (choice.equalsIgnoreCase("a")) {
+            System.out.println("How much would you like to take out? (no $)");
+            int loanVal = scn.nextInt();
+            System.out.println("Great! And how long would you like your term to be? \n a) 60 months \n b) 72 months \n c) 84 months");
+            int loanTerm = 0;
+            choice = scn.next();
+            if (choice.equalsIgnoreCase("a")) {
+                loanTerm = 60;
+            } else if (choice.equalsIgnoreCase("b")) {
+                loanTerm = 72;
+            } else if (choice.equalsIgnoreCase("c")) {
+                loanTerm = 84;
+            }
+            System.out.println("Fantastic! \n Your total loan value is - $" + loanVal + "\nAnd the term is - " + loanTerm + " months" + "\nAnd your monthly payment will be - " + ((loanVal + (loanVal*0.073))/loanTerm));
+        }
+        else if (choice.equalsIgnoreCase("b")){
+            System.out.println("Loan value - " + loan.getLoanAmount());
+            System.out.println("Loan term - " + loan.getTerm());
+            System.out.println("Remaining balance - " + loan.getRemainingBal());
+        }
+        else if (choice.equalsIgnoreCase("c")){
+            return;
         }
     }
     public void setNetWorth(){
@@ -98,6 +110,7 @@ public class Main {
         netWorth += playerBankAccount;
         netWorth -= debt;
         playerNetWorth = netWorth;
+        System.out.println(netWorth);
     }
     public void playerStats(){
         System.out.println("Year - " + years);
@@ -106,6 +119,7 @@ public class Main {
         System.out.println("Income - " + income);
         System.out.println("Debt - " + debt);
         System.out.println("Number of properties - " + property.size());
+        System.out.println(" ");
     }
 }
 

@@ -1,11 +1,11 @@
-public class Houses {
+public class House {
     private int bed;
     private double bath;
     private int sqft;
     private double value;
     private int location;
 
-    public Houses(int bed, double bath, int sqft, double value, int location) {
+    public House(int bed, double bath, int sqft, double value, int location) {
         this.bed = bed;
         this.bath = bath;
         this.sqft = sqft;

@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-public class Cards {
+public class Card {
     private String type;
     private int value;
-    Cards(String type, int value){
+    Card(String type, int value){
         this.type = type;
         this.value = value;
     }
@@ -15,7 +15,7 @@ public class Cards {
     public String getType(){
         return type;
     }
-    public int getHandValue(ArrayList<Cards> hand){
+    public int getHandValue(ArrayList<Card> hand){
         int totalVal = 0;
         for (int i = 0; i < hand.size(); i++){
             totalVal += hand.get(i).getValue();

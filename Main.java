@@ -1,16 +1,15 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
     Scanner scn = new Scanner(System.in);
     double years = 0;
     double playerNetWorth = 0;
-    double playerBankAccount = 0;
+    double playerBankAccount = 1000;
     double income = 0;
-    Loans loan = new Loans(0.0, 0);
+    Loan loan = new Loan(0.0, 0);
     double debt = 0;
-    ArrayList<Houses> property = new ArrayList<Houses>();
-    Houses test = new Houses(3, 2.5, 3500, 250000, 2);
+    ArrayList<House> property = new ArrayList<>();
+    House test = new House(3, 2.5, 3500, 250000, 2);
 
     public static void main(String[] args){
         new Main();
@@ -35,13 +34,13 @@ public class Main {
             System.out.println("Well then, here we go!");
             System.out.println("For starters, which job would you like? \n a) lawn mower ($11,247/yr) \n b) dog walker ($10,564/yr) \n c) pizza maker ($15,476/yr)");
             String jobChoice = scn.next();
-            if(jobChoice.equalsIgnoreCase("a") || jobChoice.equalsIgnoreCase("lawn mower")){
+            if(jobChoice.equalsIgnoreCase("a") || jobChoice.equalsIgnoreCase("lawn")){
                 income = 11247;
             }
-            if(jobChoice.equalsIgnoreCase("b") || jobChoice.equalsIgnoreCase("dog walker")){
+            if(jobChoice.equalsIgnoreCase("b") || jobChoice.equalsIgnoreCase("dog")){
                 income = 10564;
             }
-            if(jobChoice.equalsIgnoreCase("c") || jobChoice.equalsIgnoreCase("pizza maker")){
+            if(jobChoice.equalsIgnoreCase("c") || jobChoice.equalsIgnoreCase("pizza")){
                 income = 15476;
             }
             System.out.println("Great! That means your income is " + income);
@@ -59,14 +58,10 @@ public class Main {
                 } else if (choice.equalsIgnoreCase("d")) {
                     boolean leave = false;
                     while (!leave) {
-                        //casino();
+                        casino();
                         System.out.println("Thanks for playing! \n Would you like to leave the casino? (yes/no)");
                         String temp = scn.next();
-                        if (temp.equals("yes")){
-                            leave = true;
-                        } else{
-                            leave = false;
-                        }
+                        leave = temp.equals("yes");
                     }
                 } else if (choice.equalsIgnoreCase("e")) {
                     nextTerm();
@@ -78,12 +73,12 @@ public class Main {
         }
     }
     public void nextTerm(){
-        for (int i = 0; i < property.size(); i++) {
-            property.get(i).setValue((property.get(i).getTermPercentIncrease() + 0.2) * property.get(i).getValue());
-            System.out.println(property.get(i).getTermPercentIncrease());
-            System.out.println(property.get(i).getValue());
+        for (House house : property) {
+            house.setValue((house.getTermPercentIncrease() + 0.2) * house.getValue());
+            System.out.println(house.getTermPercentIncrease());
+            System.out.println(house.getValue());
             debt = loan.getRemainingBal();
-            playerBankAccount += income/2;
+            playerBankAccount += income / 2;
             years += 0.5;
         }
     }
@@ -115,75 +110,119 @@ public class Main {
         }
     }
     public void casino(){ //casino method
-        System.out.println("Welcome to the casino! \n Would you like to: \n a) play blackjack \n b) play roulette c) bet on horse races");
+        System.out.println("Welcome to the casino! \n Would you like to: \n a) play blackjack \n b) play roulette \n c) bet on horse races");
         String gambleChoice = scn.next();
         if (gambleChoice.equalsIgnoreCase("a")){
-            //blackjack();
+            blackjack();
         } else if (gambleChoice.equalsIgnoreCase("b")){
             //roulette();
         } else if (gambleChoice.equalsIgnoreCase("c")){
             //horseRace();
         }
     }
+    public void horserace(){ //horse race method
+
+    }
     public void blackjack() { //blackjack method
-        ArrayList<Cards> playerHand = new ArrayList<Cards>();
-        ArrayList<Cards> dealerHand = new ArrayList<Cards>();
-        ArrayList<Cards> deck = new ArrayList<Cards>();
-        for (int i = 1; i < 11; i++) {
+        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> dealerHand = new ArrayList<Card>();
+        ArrayList<Card> deck = new ArrayList<Card>();
+        for (int i = 2; i < 11; i++) {
             for (int j = 0; j < 4; j++) {
-                deck.add(new Cards("" + i, i));
+                deck.add(new Card("" + i, i));
             }
         }
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (i == 1) {
-                    deck.add(new Cards("Jack", 10));
+                if (i == 0) {
+                    deck.add(new Card("Jack", 10));
+                } else if (i == 1) {
+                    deck.add(new Card("Queen", 10));
                 } else if (i == 2) {
-                    deck.add(new Cards("Queen", 10));
-                } else if (i == 3) {
-                    deck.add(new Cards("King", 10));
-                } else if (i == 4) {
-                    deck.add(new Cards("Ace", 11));
+                    deck.add(new Card("King", 10));
+                } else {
+                    deck.add(new Card("Ace", 11));
                 }
             }
         }
-        System.out.println("Welcome to the blackjack table! \n How much would you like to bet?");
+        System.out.println("Welcome to the blackjack table! \nHow much would you like to bet?");
         int bet = scn.nextInt();
-        System.out.println("Fantastic! \n Alright then, lets get started!");
-        dealerHand.add(deck.remove((int) (Math.random() * 52) + 1));
-        playerHand.add(deck.remove((int) (Math.random() * 52) + 1));
-        dealerHand.add(deck.remove((int) (Math.random() * 52) + 1));
-        playerHand.add(deck.remove((int) (Math.random() * 52) + 1));
-        System.out.println("Dealers hand: \n" + dealerHand.get(0).getType());
-        System.out.println("Your hand: ");
-        for (int i = 0; i < playerHand.size(); i++) {
-            System.out.println(playerHand.get(i).getType());
-        }
-        while (getHandValue(playerHand) < 21){
-            System.out.println("Would you like to (H)it, or (S)tand?");
-            String playerChoice = scn.next();
-            if (playerChoice.equalsIgnoreCase("H")) {
-                playerHand.add(deck.remove((int) (Math.random() * 52) + 1));
+        boolean gameOver = false;
+        if (bet <= playerBankAccount){
+            System.out.println("Fantastic! \nAlright then, lets get started!");
+            dealerHand.add(deck.remove((int) (Math.random() * 52)));
+            playerHand.add(deck.remove((int) (Math.random() * 52)));
+            dealerHand.add(deck.remove((int) (Math.random() * 52)));
+            playerHand.add(deck.remove((int) (Math.random() * 52)));
+            System.out.println("Dealers hand - " + dealerHand.get(0).getType());
+            System.out.print("Your hand - ");
+            for (Card card : playerHand) {
+                System.out.print(card.getType() + " ");
             }
-            if (getHandValue(playerHand) > 21 && findAce(playerHand)){
-                for (int i = 0; i < playerHand.size(); i++) {
-                    if (playerHand.get(i).getType().equals("Ace")){
-                        playerHand.get(i).setValue(1);
+            while (!gameOver) {
+                System.out.print("Total value - ");
+                System.out.println(getHandValue(playerHand));
+
+                System.out.println("Would you like to (H)it, or (S)tand?");
+                String playerChoice = scn.next();
+                if (playerChoice.equalsIgnoreCase("h")) {
+                    playerHand.add(deck.remove((int) (Math.random() * 52) + 1));
+                    System.out.println(playerHand.get(playerHand.size() - 1).getType());
+                } else if (playerChoice.equalsIgnoreCase("s")){
+                    while (getHandValue(dealerHand) < 17) {
+                        if (getHandValue(playerHand) < 21) {
+                            dealerHand.add(deck.remove((int) (Math.random() * 52)));
+                        }
                     }
+                }
+                if (getHandValue(playerHand) > 21 && findAce(playerHand)) {
+                    for (Card i : playerHand) {
+                        if (i.getType().equals("Ace")) {
+                            i.setValue(1);
+                        }
+                    }
+                }
+                System.out.println("Player hand - " + getHandValue(playerHand));
+                System.out.println("Dealers hand - " + getHandValue(dealerHand));
+
+
+                if (getHandValue(playerHand) == getHandValue(dealerHand)){
+                    System.out.println("It's a tie!");
+                    gameOver = true;
+                } else if (getHandValue(playerHand) > 21) {
+                    System.out.println("Player busted, dealer wins.");
+                    playerBankAccount -= bet;
+                    System.out.println("-$" + bet);
+                    gameOver = true;
+                } else if (getHandValue(dealerHand) > 21){
+                    System.out.println("Dealer busted, player wins");
+                    playerBankAccount += bet * 2;
+                    System.out.println("+$" + bet*2);
+                    gameOver = true;
+                } else if (getHandValue(playerHand) < getHandValue(dealerHand)){
+                    System.out.println("Dealer wins");
+                    playerBankAccount -= bet;
+                    System.out.println("-$" + bet);
+                    gameOver = true;
+                } else if (getHandValue(playerHand) > getHandValue(dealerHand)){
+                    System.out.println("Player wins");
+                    playerBankAccount += bet * 2;
+                    System.out.println("+$" + bet*2);
+                    gameOver = true;
                 }
             }
         }
     }
-    public int getHandValue(ArrayList<Cards> hand){
+    public int getHandValue(ArrayList<Card> hand){
         int totalVal = 0;
-        for (int i = 0; i < hand.size(); i++){
-            totalVal += hand.get(i).getValue();
+        for (Card card : hand) {
+            totalVal += card.getValue();
         }
         return totalVal;
     }
-    public boolean findAce(ArrayList<Cards> hand){
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getType().equals("Ace")){
+    public boolean findAce(ArrayList<Card> hand){
+        for (Card card : hand) {
+            if (card.getType().equals("Ace")) {
                 return true;
             }
         }
@@ -191,8 +230,8 @@ public class Main {
     }
     public void setNetWorth(){
         int netWorth = 0;
-        for(int i = 0; i < property.size(); i++){
-            netWorth += property.get(i).getValue();
+        for (House house : property) {
+            netWorth += house.getValue();
         }
         netWorth += playerBankAccount;
         netWorth -= debt;

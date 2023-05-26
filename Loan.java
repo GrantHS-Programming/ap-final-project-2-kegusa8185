@@ -1,10 +1,10 @@
-public class Loans {
+public class Loan {
     private double loanAmount;
     private double APR = 0.073;
     private double remainingBal;
     private double loanPayment;
     private int term;
-    public Loans(double loanAmount, int term){
+    public Loan(double loanAmount, int term){
         this.loanAmount = loanAmount;
         this.term = term;
     }

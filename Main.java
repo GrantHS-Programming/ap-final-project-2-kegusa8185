@@ -117,11 +117,31 @@ public class Main {
         } else if (gambleChoice.equalsIgnoreCase("b")){
             //roulette();
         } else if (gambleChoice.equalsIgnoreCase("c")){
-            //horseRace();
+            horserace();
         }
     }
     public void horserace(){ //horse race method
-
+        System.out.println("Which horse would you like to bet on? 1-5");
+        int horse = scn.nextInt();
+        System.out.println("Fantastic! And how much would you like to bet on horse number " + horse);
+        int bet = scn.nextInt();
+        if (bet <= playerBankAccount) {
+            System.out.println("Alright, you're betting " + bet + " on horse " + horse);
+            System.out.println("Starting in ");
+            System.out.println("3");
+            System.out.println("2");
+            System.out.println("1");
+            int winner = (int) (Math.random() * 5 + 1);
+            if (horse == winner) {
+                System.out.println("Congrats! Horse " + horse + " won!");
+                System.out.println("+$" + bet * 5);
+                playerBankAccount += bet * 4;
+            } else if (horse != winner) {
+                System.out.println("You lose :(");
+                System.out.println("-$" + bet);
+                playerBankAccount -= bet;
+            }
+        }
     }
     public void blackjack() { //blackjack method
         ArrayList<Card> playerHand = new ArrayList<Card>();

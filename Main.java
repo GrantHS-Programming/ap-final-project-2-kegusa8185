@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
@@ -10,11 +11,29 @@ public class Main {
     double debt = 0;
     ArrayList<House> property = new ArrayList<>();
     House test = new House(3, 2.5, 3500, 250000, 2);
+    ArrayList<House> houses = new ArrayList<>();
+    ArrayList<House> market = new ArrayList<>();
+    House house1 = new House(2, 1.5, 2000, 160000, 1);
+    House house2 = new House(2, 1.5, 3000, 230000, 2);
+    House house3 = new House(3, 2.5, 4500, 550000, 3);
+    House house4 = new House(7, 7.5, 6500, 1400000, 4);
+    House house5 = new House(1, 1, 1200, 80000, 1);
+    House house6 = new House(3, 2.5, 3000, 300000, 2);
+    House house7 = new House(4, 3.5, 4500, 600000, 3);
+    House house8 = new House(5, 5, 6000, 1500000, 4);
 
     public static void main(String[] args){
         new Main();
     }
     public Main(){
+        houses.add(house1);
+        houses.add(house2);
+        houses.add(house3);
+        houses.add(house4);
+        houses.add(house5);
+        houses.add(house6);
+        houses.add(house7);
+        houses.add(house8);
         Game();
     }
 
@@ -52,7 +71,7 @@ public class Main {
                 if (choice.equalsIgnoreCase("a")) {
                     playerStats();
                 } else if (choice.equalsIgnoreCase("b")) {
-                    //houseMarket();
+                    houseMarket();
                 } else if (choice.equalsIgnoreCase("c")) {
                     bank();
                 } else if (choice.equalsIgnoreCase("d")) {
@@ -68,8 +87,15 @@ public class Main {
                     setNetWorth();
                     playerStats();
                 }
-                }
-
+            }
+        }
+    }
+    public void houseMarket(){
+        for (int i = 0; i < 4; i++) {
+            market.add(houses.remove((int)((Math.random() * 8))));
+        }
+        for (int i = 0; i < 4; i++) {
+            System.out.println(market.get(i));
         }
     }
     public void nextTerm(){
@@ -110,14 +136,33 @@ public class Main {
         }
     }
     public void casino(){ //casino method
-        System.out.println("Welcome to the casino! \n Would you like to: \n a) play blackjack \n b) play roulette \n c) bet on horse races");
+        System.out.println("Welcome to the casino! \n Would you like to: \n a) play blackjack \n b) bet on a coin flip \n c) bet on horse races");
         String gambleChoice = scn.next();
         if (gambleChoice.equalsIgnoreCase("a")){
             blackjack();
         } else if (gambleChoice.equalsIgnoreCase("b")){
-            //roulette();
+            coinFlip();
         } else if (gambleChoice.equalsIgnoreCase("c")){
             horserace();
+        }
+    }
+    public void coinFlip(){//coinflip method
+        System.out.println("welcome to the coin flip table!");
+        System.out.println("How much would you like to bet?");
+        int bet = scn.nextInt();
+        if (bet <= playerBankAccount){
+            System.out.println("Fantastic! Would you like to bet on heads or tails? (1-2)");
+            int headsTails = scn.nextInt();
+            int flip = (int) (Math.random() * 2 + 1);
+            if (headsTails == flip){
+                System.out.println("Congrats you win!");
+                System.out.println("+$" + bet * 2);
+                playerBankAccount += bet * 2;
+            }else{
+                System.out.println("You lose :(");
+                System.out.println("-$" + bet);
+                playerBankAccount -= bet;
+            }
         }
     }
     public void horserace(){ //horse race method
